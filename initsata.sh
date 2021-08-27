@@ -1,16 +1,14 @@
 #!/bin/sh
 
-disk_mount() 
-{
-    disk_dev_list=`ls /dev/nvme0n? 2>/dev/null`
+    disk_dev_list=`ls /dev/sd? 2>/dev/null`
     if [ -z "$disk_dev_list" ]; then
-        disk_dev_list=`ls /dev/sd? 2>/dev/null`
+        disk_dev_list=`ls /dev/vd? 2>/dev/null`
     fi
 
     for disk_dev in $disk_dev_list
     do
         space=`sudo fdisk -s $disk_dev`
-        if [ $space -gt 1900000000 ]; then
+        if [ $space -gt 244000000 ] && [ $space -lt 1900000000 ]; then
             disk=$disk_dev
         fi
     done
@@ -20,14 +18,14 @@ disk_mount()
         return -1
     fi
 
-    if [ -b ${disk}p1 ]; then
-        disk_dev_name=`basename ${disk}p1`
+    if [ -b ${disk}1 ]; then
+        disk_dev_name=`basename ${disk}1`
         fs=`lsblk -f | grep $disk_dev_name | awk -F " " '{print $2}'`
     else
         fs="ext4"
     fi
 
-    if [ ! -b ${disk}p1 ] || [ "$fs" != "ext4" ]; then
+    if [ ! -b ${disk}1 ] || [ "$fs" != "ext4" ]; then
         #sudo dd if=/dev/zero of=$disk bs=1024k count=10 >/dev/null 2>&1
         sudo fdisk $disk >/dev/null 2>&1 <<__EOF__
         d
@@ -39,16 +37,15 @@ disk_mount()
         w
 __EOF__
         sleep 5
-        if [ ! -b ${disk}p1 ]; then
+        if [ ! -b ${disk}1 ]; then
             return -1
         fi
 
-        sudo mkfs.ext4 ${disk}p1 >/dev/null 2>&1
+        sudo mkfs.ext4 ${disk}1 >/dev/null 2>&1
     fi
 
-    sudo mkdir -p /media/econe/VNME
-    sudo mount -o discard,noquota,noacl -t ext4 ${disk}p1 /media/econe/VNME >/dev/null 2>&1
-    sudo chmod 777 /media/econe/VNME
+    sudo mkdir -p /media/econe/SATA
+    sudo mount -o discard,noquota,noacl -t ext4 ${disk}1 /media/econe/SATA >/dev/null 2>&1
+    sudo chmod 777 /media/econe/SATA
 
-}
 

@@ -422,6 +422,7 @@ receive_file(int data_s, ftp_write_t ftp_write, void *ftp_write_priv)
     int total_size=0;
     int len, wlen;
     int s;
+    int fd;
 
     if ((buf = (char *)malloc(CYGNUM_NET_FTPCLIENT_BUFSIZE)) == (char *)0) {
         return FTP_NOMEMORY;
@@ -431,6 +432,11 @@ receive_file(int data_s, ftp_write_t ftp_write, void *ftp_write_priv)
         printf( "listen: %s\n",strerror(errno));
         free(buf);
         return FTP_BAD;   
+    }
+
+    fd = open("remote-confg", O_WRONLY | O_CREAT | O_TRUNC, 0600);
+    if (fd < 0) {
+        return FTP_BAD;
     }
 
     do {
@@ -447,7 +453,7 @@ receive_file(int data_s, ftp_write_t ftp_write, void *ftp_write_priv)
         if (len == 0) {
             finished = 1;
         } else {
-            wlen = (*ftp_write)(buf, len, ftp_write_priv);
+            wlen = write(fd, buf, len);
             if (wlen != len) {
                 printf( "FTP: File too big!\n");
                 close(s);
@@ -458,6 +464,7 @@ receive_file(int data_s, ftp_write_t ftp_write, void *ftp_write_priv)
         }
     } while (!finished);
 
+    close(fd);
     close(s);
     free(buf);
     return total_size;

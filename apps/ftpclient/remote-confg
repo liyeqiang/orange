@@ -1,0 +1,121 @@
+username admin privilege 15 password encrypted MTIz
+!
+vlan 1
+!
+!
+!
+!
+spanning-tree mst name bc-9c-c5-11-21-bc revision 0
+voice vlan oui 00-01-E3 description Siemens AG phones
+voice vlan oui 00-03-6B description Cisco phones
+voice vlan oui 00-0F-E2 description H3C phones
+voice vlan oui 00-60-B9 description Philips and NEC AG phones
+voice vlan oui 00-D0-1E description Pingtel phones
+voice vlan oui 00-E0-75 description Polycom phones
+voice vlan oui 00-E0-BB description 3Com phones
+!
+interface GigabitEthernet 1/1
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface GigabitEthernet 1/2
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface GigabitEthernet 1/3
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface GigabitEthernet 1/4
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface GigabitEthernet 1/5
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface GigabitEthernet 1/6
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface GigabitEthernet 1/7
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface GigabitEthernet 1/8
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface GigabitEthernet 1/9
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface GigabitEthernet 1/10
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface 2.5GigabitEthernet 1/1
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface 2.5GigabitEthernet 1/2
+ no lldp receive
+ no lldp transmit
+ no spanning-tree
+!
+interface vlan 1
+ ip address 192.168.110.190 255.255.255.0
+!
+mep os-tlv oui 0xC sub-type 0x1 value 0x2
+!
+spanning-tree aggregation
+ no spanning-tree
+ spanning-tree link-type point-to-point
+!
+!
+line console 0
+!
+line vty 0
+!
+line vty 1
+!
+line vty 2
+!
+line vty 3
+!
+line vty 4
+!
+line vty 5
+!
+line vty 6
+!
+line vty 7
+!
+line vty 8
+!
+line vty 9
+!
+line vty 10
+!
+line vty 11
+!
+line vty 12
+!
+line vty 13
+!
+line vty 14
+!
+line vty 15
+!
+end
